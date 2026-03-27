@@ -1,27 +1,132 @@
-# EcoBlissBath
+# EcoBlissBath - Test Automation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.
+## Contexte du projet
 
-## Development server
+Ce projet a pour objectif d'automatiser les tests d'une application e-commerce (Eco Bliss Bath) en utilisant Cypress.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Dans le cadre de ce projet, j'interviens en tant que QA Engineer afin de :
 
-## Code scaffolding
+* analyser les tests manuels existants
+* sélectionner des scénarios critiques
+* automatiser des scénarios critiques
+* vérifier le bon fonctionnement des API
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Prérequis
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* Node.js
+* Docker
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Installation
 
-## Running end-to-end tests
+Cloner le projet :
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+git clone https://github.com/OpenClassrooms-Student-Center/Eco-Bliss-Bath-V2.git
+cd Eco-Bliss-Bath-V2
+```
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Lancer le projet
+
+### Backend (Docker)
+
+```bash
+docker compose up -d
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Application accessible sur :
+http://localhost:4200
+
+---
+
+## Lancer les tests Cypress
+
+Depuis le dossier `frontend` :
+
+### Mode interface
+
+```bash
+npx cypress open
+```
+
+### Mode headless
+
+```bash
+npx cypress run
+```
+
+---
+
+## Tests automatisés
+
+Les tests couvrent :
+
+### Tests API
+
+* Login avec un utilisateur
+* Récupération de la liste des produits
+* Récupération du détail d’un produit
+* Récupération du panier utilisateur
+* Ajout d’un produit au panier
+* Ajout d’un avis
+
+### Tests fonctionnels
+
+* Connexion utilisateur
+* Ajout au panier
+
+### Tests smoke
+
+* Parcours principal de l’application
+
+### Test de sécurité
+
+* Vérification d’une faille XSS sur les commentaires
+
+---
+
+## Structure du projet
+
+```
+cypress/
+  e2e/
+    api.cy.js
+    connexion.cy.js
+    panier.cy.js
+    smoke.cy.js
+    xss.cy.js
+```
+
+---
+
+## Outils utilisés
+
+* Cypress
+* Docker
+* JavaScript
+
+---
+## Livrables
+
+- Rapport de campagne de test manuel (réalisé par une testeuse manuelle)
+- Tests automatisés avec Cypress (basés sur ce rapport)
+
+Les scénarios automatisés ont été sélectionnés à partir du rapport de test manuel afin de couvrir les parcours critiques de l’application.
+
+## Auteur
+
+Gulnur Taskin
+Testeuse Logiciel (formation OpenClassrooms)

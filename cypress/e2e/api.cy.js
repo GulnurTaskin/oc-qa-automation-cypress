@@ -12,6 +12,15 @@ describe('API Tests', () => {
             expect(response.status).to.eq(200)
         })
     })
+  it('Refuser l’accès sans authentification avec un 401', () => {
+  cy.request({
+    method: 'GET',
+    url: 'http://localhost:8081/orders',
+    failOnStatusCode: false
+  }).then((response) => {
+    expect(response.status, 'Le code de statut doit être 401').to.eq(401)
+  })
+})
 
     it('Récupérer la liste des produits', () => {
         cy.request({
