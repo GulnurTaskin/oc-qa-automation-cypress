@@ -6,17 +6,18 @@ Ce projet a pour objectif d'automatiser les tests d'une application e-commerce (
 
 Dans le cadre de ce projet, j'interviens en tant que QA Engineer afin de :
 
-- analyser les tests manuels existants  
-- sélectionner des scénarios critiques  
-- automatiser des scénarios critiques  
-- vérifier le bon fonctionnement des API  
+* analyser les tests manuels existants
+* automatiser des scénarios critiques
+* vérifier le bon fonctionnement des API
+
+Les scénarios automatisés ont été définis à partir du bilan de tests manuels.
 
 ---
 
 ## Prérequis
 
-- Node.js  
-- Docker  
+* Node.js
+* Docker
 
 ---
 
@@ -27,44 +28,79 @@ Cloner le projet :
 ```bash
 git clone https://github.com/OpenClassrooms-Student-Center/Eco-Bliss-Bath-V2.git
 cd Eco-Bliss-Bath-V2
-Lancer le projet
-Backend (Docker)
+```
+
+---
+
+## Lancer le projet
+
+### Backend (Docker)
+
+```bash
 docker compose up -d
-Frontend
+```
+
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm start
-
-Application accessible sur :
+```
+Application accessible sur :  
 http://localhost:4200
 
-Lancer les tests Cypress
+---
 
-Depuis le dossier frontend :
+## Lancer les tests Cypress
 
-Mode interface
+Depuis le dossier `frontend` :
+
+### Mode interface
+
+```bash
 npx cypress open
-Mode headless
+```
+
+### Mode headless
+
+```bash
 npx cypress run
-Tests automatisés
+```
+
+---
+
+## Tests automatisés
 
 Les tests couvrent :
 
-Tests API
-Login avec un utilisateur
-Récupération de la liste des produits
-Récupération du détail d’un produit
-Récupération du panier utilisateur
-Ajout d’un produit au panier
-Ajout d’un avis
-Tests fonctionnels
-Connexion utilisateur
-Ajout d’un produit au panier
-Tests smoke
-Vérification des éléments essentiels (login, affichage, navigation)
-Test de sécurité
-Vérification d’une faille XSS sur les commentaires
-Structure du projet
+### Tests API
+
+* Login avec un utilisateur
+* Récupération de la liste des produits
+* Récupération du détail d’un produit
+* Récupération du panier utilisateur
+* Ajout d’un produit au panier
+* Ajout d’un avis
+
+### Tests fonctionnels
+
+* Connexion utilisateur
+* Ajout d’un produit au panier
+
+### Tests smoke
+
+* Vérification des éléments essentiels (login, affichage, navigation)
+
+### Test de sécurité
+
+* Vérification d’une faille XSS sur les commentaires
+
+---
+
+## Structure du projet
+
+```
 cypress/
   e2e/
     api.cy.js
@@ -72,27 +108,26 @@ cypress/
     panier.cy.js
     smoke.cy.js
     xss.cy.js
-Outils utilisés
-Cypress
-Docker
-JavaScript
-Livrables
-Rapport de campagne de test manuel (réalisé par une testeuse manuelle)
-Tests automatisés avec Cypress (basés sur ce rapport)
+```
 
-Les scénarios automatisés ont été sélectionnés à partir du rapport de test manuel afin de couvrir les parcours critiques de l’application.
+---
 
-Auteur
+## Outils utilisés
 
-Gulnur Taskin
-QA Engineer – Formation OpenClassrooms
+* Cypress
+* Docker
+* JavaScript
+
+---
+
+## Auteur
+
+Gulnur Taskin  
+QA Engineer - Formation OpenClassrooms
 
 
-## Projet original - Openclassrooms
+## Projet original - OpenClassrooms
 
-<div align="center">
-
-# OpenClassrooms - Eco-Bliss-Bath
 <div align="center">
 
 # OpenClassrooms - Eco-Bliss-Bath
