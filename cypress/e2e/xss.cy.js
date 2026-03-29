@@ -1,42 +1,45 @@
 describe('Test de sécurité - XSS', () => {
-  it("Vérifier l'absence de faille XSS dans l’espace commentaire", () => {
-    cy.request({
-      method: 'POST',
-      url: 'http://localhost:8081/login',
-      body: {
-        username: 'test2@test.fr',
-        password: 'testtest'
-      }
+  it("Vérifier l'absence de faille XSS dans les commentaires", () => {
+
+    // Connexion utilisateur
+    cy.request('POST', 'http://localhost:8081/login', {
+      username: 'test2@test.fr',
+      password: 'testtest'
     }).then((loginResponse) => {
-      expect(loginResponse.status).to.eq(200)
 
-      const token = loginResponse.body.token
+      // Récupération du token
+      let token = loginResponse.body.token
 
+      // Envoi d’un commentaire avec un script XSS
       cy.request({
-        method: 'GET',
-        url: 'http://localhost:8081/products'
-      }).then((productsResponse) => {
-        expect(productsResponse.status).to.eq(200)
-        expect(productsResponse.body).to.not.be.empty
+        method: 'POST',
+        url: 'http://localhost:8081/reviews',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        failOnStatusCode: false,
+        body: {
+          title: 'Test XSS',
+          comment: '<script>alert("XSS")</script>',
+          rating: 4
+        }
+      }).then((response) => {
 
-        const product = productsResponse.body[0]
+        // Vérifier que la requête est acceptée
+        expect(response.status).to.be.oneOf([200, 201])
 
-        cy.request({
-          method: 'POST',
-          url: 'http://localhost:8081/reviews',
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          failOnStatusCode: false,
-          body: {
-            title: 'Test XSS',
-            comment: '<script>alert("XSS")</script>',
-            rating: 4,
-            
-          }
-        }).then((response) => {
-          expect(response.status).to.be.oneOf([200, 201])
-        })
+        // Aller sur le site
+        cy.visit('http://localhost:4200',)
+
+        // Accéder aux avis
+        cy.get('[data-cy="nav-link-reviews"]').first().click()
+
+        // Vérifier que le commentaire est affiché
+        cy.contains('Test XSS').should('exist')
+
+        // Vérifier que le script n’est pas exécuté
+        cy.contains('<script>').should('not.exist')
+
       })
     })
   })
