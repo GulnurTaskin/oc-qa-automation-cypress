@@ -32,10 +32,10 @@ describe('Test de sécurité - XSS', () => {
             title: 'Test XSS',
             comment: '<script>alert("XSS")</script>',
             rating: 4,
-            productId: product._id
+            
           }
         }).then((response) => {
-          expect(response.status).to.be.oneOf([200, 201, 400])
+          expect(response.status).to.be.oneOf([200, 201])
         })
       })
     })

@@ -12,15 +12,15 @@ describe('API Tests', () => {
             expect(response.status).to.eq(200)
         })
     })
-  it('Refuser l’accès sans authentification avec un 401', () => {
-  cy.request({
-    method: 'GET',
-    url: 'http://localhost:8081/orders',
-    failOnStatusCode: false
-  }).then((response) => {
-    expect(response.status, 'Le code de statut doit être 401').to.eq(401)
-  })
-})
+    it('Refuser l’accès sans authentification avec un 401', () => {
+        cy.request({
+            method: 'GET',
+            url: 'http://localhost:8081/orders',
+            failOnStatusCode: false
+        }).then((response) => {
+            expect(response.status, 'Le code de statut doit être 401').to.eq(401)
+        })
+    })
 
     it('Récupérer la liste des produits', () => {
         cy.request({
@@ -31,7 +31,7 @@ describe('API Tests', () => {
             expect(response.body).to.not.be.empty
         })
     })
-    it('Récupérer le détail d’un produit', () => {
+    it('Récupérer le détail d’un produit avec un id fixe', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:8081/products/3'
@@ -41,7 +41,7 @@ describe('API Tests', () => {
         })
     })
 
-    it('Récupérer le détail d’un produit', () => {
+    it('Récupérer le détail d’un produit avec un id dynamique ', () => {
         cy.request({
             method: 'GET',
             url: 'http://localhost:8081/products'
