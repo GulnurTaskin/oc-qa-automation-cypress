@@ -1,39 +1,73 @@
 describe('Test fonctionnel - Panier', () => {
 
-    it('Ajouter un produit au panier', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:4200');
 
-          cy.visit('http://localhost:4200')
-        cy.get('.text-header > button').click() // voir les produits
-        cy.url().should('include', '/products')
+    // Connexion utilisateur
+    cy.contains('Connexion').click();
+    cy.get('[data-cy="login-input-username"]').type('test2@test.fr');
+    cy.get('[data-cy="login-input-password"]').type('testtest');
+    cy.get('[data-cy="login-submit"]').click();
 
-        // l'affichage
-        cy.contains('Consulter').should('have.length.greaterThan', 0)
-        cy.contains('Consulter').each(($button) => {
-            cy.wrap($button).should('be.visible')
-        })
+    // Aller sur la liste des produits
+    cy.get('.text-header > button').click();
+    cy.url().should('include', '/products');
 
-        cy.contains('Consulter').first().click()
-        cy.get('[data-cy="detail-product-add"]')
-            .scrollIntoView()
-            .should('be.visible')
+    // Ouvrir une fiche produit
+    cy.get('[data-cy="product-link"]').eq(2).click();
 
-        cy.contains('Connexion').click()
+    cy.get('[data-cy="detail-product-stock"]').should('be.visible');
+    cy.get('[data-cy="detail-product-quantity"]').should('be.visible');
+    cy.get('[data-cy="detail-product-add"]').should('be.visible');
+  });
 
-        cy.get('[data-cy="login-input-username"]').type('test2@test.fr')
-        cy.get('[data-cy="login-input-password"]').type('testtest')
+  it('Ajout d’un produit au panier avec une quantité valide', () => {
+    cy.get('[data-cy="detail-product-quantity"]')
+      .clear()
+      .type('1')
+      .blur();
 
-        cy.get('[data-cy="login-submit"]').click()
-        cy.get('.text-header > button').click() // voir les produits
+    cy.get('[data-cy="detail-product-add"]')
+      .scrollIntoView()
+      .click({ force: true });
 
-        cy.get('[data-cy="product-link"]').eq(2).click()
-        cy.wait(1000)
-        cy.get('[data-cy="detail-product-add"]')
-            .scrollIntoView()
-            .should('be.visible')
-            .click({ force: true })
+    cy.url().should('include', '/cart');
+  });
 
-        cy.url().should('include', '/cart')
+  it('Refus d’une quantité négative', () => {
+    cy.get('[data-cy="detail-product-quantity"]')
+      .clear()
+      .type('-5')
+      .blur();
 
-    })
+    // Comportement attendu :
+    // une valeur négative ne doit pas être conservée
+    cy.get('[data-cy="detail-product-quantity"]')
+      .invoke('val')
+      .then((value) => {
+        expect(value).to.not.equal('-5');
+      });
 
-})
+    // Le bouton ne doit pas permettre l’ajout
+    cy.get('[data-cy="detail-product-add"]').should('be.disabled');
+  });
+
+  it('Refus d’une quantité supérieure à 20', () => {
+    cy.get('[data-cy="detail-product-quantity"]')
+      .clear()
+      .type('21')
+      .blur();
+
+    // Comportement attendu :
+    // une valeur supérieure à 20 ne doit pas être conservée
+    cy.get('[data-cy="detail-product-quantity"]')
+      .invoke('val')
+      .then((value) => {
+        expect(Number(value)).to.be.at.most(20);
+      });
+
+    // Le bouton ne doit pas permettre l’ajout
+    cy.get('[data-cy="detail-product-add"]').should('be.disabled');
+  });
+
+});
